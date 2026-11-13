@@ -154,9 +154,19 @@
   .loading{padding:40px 0;text-align:center;color:var(--muted)}
 
   /* Giriş ekranı (Firebase) */
-  .login{position:fixed;inset:0;background:rgba(246,241,230,.96);display:grid;place-items:center;z-index:20;padding:20px}
-  .login-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;max-width:380px;text-align:center}
+  .login{position:fixed;inset:0;background:rgba(246,241,230,.97);display:grid;place-items:center;z-index:20;padding:20px;overflow:auto}
+  .login-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px;width:100%;max-width:380px;text-align:center}
   .login-card h2{font-family:var(--serif);margin:0 0 8px}
+  .login-form{display:grid;gap:8px;margin-top:14px}
+  .login-form input{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}
+  .login-form input:focus{outline:2px solid var(--new);outline-offset:0;border-color:transparent}
+  .login-card .btn{width:100%}
+  .login-card .link-btn:hover{color:var(--new)}
+  .or{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:13px}
+  .or::before,.or::after{content:'';flex:1;height:1px;background:var(--line)}
+  .login-msg{margin:10px 0 0;font-size:14px;font-weight:600;color:var(--danger);min-height:1em}
+  .login-msg.ok{color:var(--sen)}
+  .login-card button:disabled{opacity:.6;cursor:wait}
 
   #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;font-size:14px;font-weight:600;z-index:30;max-width:min(92vw,520px);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.18)}
   #toast.show{opacity:1;transform:translate(-50%,0)}
@@ -431,8 +441,18 @@
 <div id="login" class="login" hidden>
   <div class="login-card">
     <h2>Kelime Defteri</h2>
-    <p class="muted">Kelimelerin her cihazda aynı olsun diye Google hesabınla giriş yap.</p>
-    <button class="btn" type="button" id="login-btn">Google ile giriş yap</button>
+    <p class="muted small">Kelimelerin her cihazda aynı olsun diye giriş yap. <b>Her cihazda aynı yöntemle gir</b>, yoksa farklı bir defter açılır.</p>
+    <form id="email-form" class="login-form">
+      <input type="email" id="login-email" placeholder="E-posta adresin" autocomplete="email" autocapitalize="off" spellcheck="false" aria-label="E-posta">
+      <input type="password" id="login-pass" placeholder="Şifre (en az 6 karakter)" autocomplete="current-password" aria-label="Şifre">
+      <button class="btn" type="submit" id="signin-btn">Giriş yap</button>
+      <button class="btn ghost" type="button" id="signup-btn">İlk kez mi? Yeni hesap oluştur</button>
+      <button class="link-btn" type="button" id="reset-btn">Şifremi unuttum</button>
+    </form>
+    <div class="or"><span>ya da</span></div>
+    <button class="btn ghost" type="button" id="login-btn">Google ile giriş yap</button>
+    <p class="muted small" style="margin:8px 0 0">Google girişi bazı telefonlarda çalışmıyor; orada e-posta ile gir.</p>
+    <p id="login-msg" class="login-msg" role="alert"></p>
   </div>
 </div>
 
@@ -574,7 +594,7 @@ const LocalStore = {
 
 const FirebaseStore = {
   label: 'Veriler Firebase’de saklanıyor',
-  note: 'Kelimeler <b>Firebase’de</b> saklanır: aynı Google hesabıyla girdiğin her cihazda aynı kelimeleri görürsün. Yine de ara sıra <b>Dışa aktar</b> ile yedek almak iyi olur.',
+  note: 'Kelimeler <b>Firebase’de</b> saklanır: aynı hesapla (aynı e-posta ya da aynı Google hesabı) girdiğin her cihazda aynı kelimeleri görürsün. Yine de ara sıra <b>Dışa aktar</b> ile yedek almak iyi olur.',
   fs: null, db: null, auth: null, authMod: null, uid: null,
   async init() {
     const base = `https://www.gstatic.com/firebasejs/${CONFIG.FIREBASE_VERSION}`;
@@ -675,15 +695,67 @@ const ArtifactStore = {
 };
 const inArtifact = () => !!(window.claude && typeof window.claude.use === 'function');
 
+// Firebase hata kodlarını Türkçe açıklamaya çevir
+function authError(e) {
+  const c = (e && e.code) || '';
+  const m = {
+    'auth/invalid-credential': 'E-posta ya da şifre yanlış. Hesabın yoksa “Yeni hesap oluştur”a bas.',
+    'auth/invalid-login-credentials': 'E-posta ya da şifre yanlış. Hesabın yoksa “Yeni hesap oluştur”a bas.',
+    'auth/wrong-password': 'Şifre yanlış.',
+    'auth/user-not-found': 'Bu e-postayla hesap yok. “Yeni hesap oluştur”a bas.',
+    'auth/email-already-in-use': 'Bu e-postayla zaten bir hesap var. Şifreni yazıp “Giriş yap”a bas.',
+    'auth/weak-password': 'Şifre en az 6 karakter olmalı.',
+    'auth/invalid-email': 'E-posta adresi geçersiz görünüyor.',
+    'auth/missing-email': 'Önce e-posta adresini yaz.',
+    'auth/missing-password': 'Şifreni yaz.',
+    'auth/operation-not-allowed': 'Bu giriş yöntemi Firebase’de açılmamış (Authentication → Sign-in method).',
+    'auth/popup-blocked': 'Açılır pencere engellendi. E-posta ile giriş yap.',
+    'auth/popup-closed-by-user': 'Google penceresi kapatıldı. Telefondaysan e-posta ile giriş yap.',
+    'auth/cancelled-popup-request': '',
+    'auth/network-request-failed': 'İnternet bağlantısı yok gibi görünüyor.',
+    'auth/too-many-requests': 'Çok fazla deneme yapıldı. Biraz bekleyip tekrar dene.',
+    'auth/unauthorized-domain': 'Bu site Firebase’de izinli alan adı olarak eklenmemiş.'
+  };
+  return c in m ? m[c] : 'Giriş yapılamadı: ' + (c || (e && e.message) || e);
+}
+
 function askLogin(fb) {
+  const A = fb.authMod;
   return new Promise(resolve => {
     $('#login').hidden = false;
-    $('#login-btn').onclick = async () => {
-      try {
-        const r = await fb.authMod.signInWithPopup(fb.auth, new fb.authMod.GoogleAuthProvider());
-        $('#login').hidden = true; resolve(r.user);
-      } catch (e) { console.error(e); toast('Giriş yapılamadı: ' + (e.code || e.message)); }
+    const msg = (t, ok) => { const el = $('#login-msg'); el.textContent = t || ''; el.classList.toggle('ok', !!ok); };
+    const creds = () => ({ email: $('#login-email').value.trim(), pass: $('#login-pass').value });
+    const buttons = $$('#login button');
+    // Bir işlem sürerken butonları kilitle; başarılıysa uygulamayı aç
+    const run = async fn => {
+      msg(''); buttons.forEach(b => { b.disabled = true; });
+      try { const r = await fn(); if (r && r.user) { $('#login').hidden = true; resolve(r.user); } }
+      catch (e) { console.error(e); msg(authError(e)); }
+      finally { buttons.forEach(b => { b.disabled = false; }); }
     };
+    const check = needPass => {
+      const { email, pass } = creds();
+      if (!email) { msg('Önce e-posta adresini yaz.'); $('#login-email').focus(); return null; }
+      if (needPass && pass.length < 6) { msg('Şifre en az 6 karakter olmalı.'); $('#login-pass').focus(); return null; }
+      return { email, pass };
+    };
+    $('#email-form').onsubmit = e => {
+      e.preventDefault();
+      const c = check(true); if (!c) return;
+      run(() => A.signInWithEmailAndPassword(fb.auth, c.email, c.pass));
+    };
+    $('#signup-btn').onclick = () => {
+      const c = check(true); if (!c) return;
+      run(() => A.createUserWithEmailAndPassword(fb.auth, c.email, c.pass));
+    };
+    $('#reset-btn').onclick = () => {
+      const c = check(false); if (!c) return;
+      run(async () => {
+        await A.sendPasswordResetEmail(fb.auth, c.email);
+        msg('Şifre sıfırlama e-postası gönderildi. Gelen kutunu ve spam klasörünü kontrol et.', true);
+      });
+    };
+    $('#login-btn').onclick = () => run(() => A.signInWithPopup(fb.auth, new A.GoogleAuthProvider()));
   });
 }
 
