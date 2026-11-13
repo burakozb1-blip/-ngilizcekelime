@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kelime Defteri · Her gün 5 İngilizce kelime</title>
+<meta name="description" content="Her gün 5 yeni İngilizce kelime ekle, ertesi gün ezberle, iki gün sonra cümle kur." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f6f1e6; --card:#fffdf8; --ink:#1d2433; --muted:#6b6f7a; --line:#e6dccb;
+    --new:#2f55d4; --new-bg:#e9eefc;
+    --mem:#b85f00; --mem-bg:#fdf0dc;
+    --sen:#17784a; --sen-bg:#e3f4ea;
+    --danger:#b42318;
+    --radius:18px;
+    --serif:'Fraunces', Georgia, 'Times New Roman', serif;
+    --sans:'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;font-size:16px}
+  button{font:inherit;color:inherit}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 18px 64px}
+  .muted{color:var(--muted)}
+  .small{font-size:13px}
+
+  /* ---------- Üst kısım ---------- */
+  header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
+  .eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  h1{font-family:var(--serif);font-size:clamp(32px,5vw,46px);line-height:1.05;margin:4px 0 6px;letter-spacing:-.015em}
+  .sub{margin:0;color:var(--muted)}
+  .stats{display:flex;gap:8px;flex-wrap:wrap}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 14px;min-width:78px}
+  .stat b{display:block;font-family:var(--serif);font-size:22px;line-height:1.2}
+  .stat span{font-size:12px;color:var(--muted)}
+
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0 22px}
+  .how .step{border-radius:14px;padding:12px 14px;font-size:14px;display:flex;flex-direction:column;gap:2px}
+  .how .step b{font-size:13px;letter-spacing:.02em}
+  .how .new{background:var(--new-bg)} .how .new b{color:var(--new)}
+  .how .mem{background:var(--mem-bg)} .how .mem b{color:var(--mem)}
+  .how .sen{background:var(--sen-bg)} .how .sen b{color:var(--sen)}
+
+  /* ---------- Gün sekmeleri ---------- */
+  .daynav{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:thin}
+  .daypill{flex:0 0 auto;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;transition:background .15s,border-color .15s}
+  .daypill:hover{border-color:#cfc3ad}
+  .daypill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .daypill.add{border-style:dashed;color:var(--new);background:transparent}
+  .daypill.add:hover{background:var(--new-bg)}
+  .dots{display:flex;gap:3px}
+  .dot{width:8px;height:8px;border-radius:50%;border:1.5px solid}
+  .dot.new{border-color:var(--new)} .dot.mem{border-color:var(--mem)} .dot.sen{border-color:var(--sen)}
+  .dot.new.done{background:var(--new)} .dot.mem.done{background:var(--mem)} .dot.sen.done{background:var(--sen)}
+  .daypill.active .dot{border-color:#fff}
+  .daypill.active .dot.done{background:#fff}
+  .dot.na{opacity:.25}
+  .tick{color:var(--sen);font-weight:800}
+  .daypill.active .tick{color:#8ee0b4}
+
+  /* ---------- Gün başlığı ---------- */
+  .dayhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:10px 0 4px}
+  .dtitle{font-family:var(--serif);font-size:30px;margin:2px 0 0;line-height:1.1}
+  .dayhead-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted)}
+  .chip.new.done{background:var(--new-bg);border-color:transparent;color:var(--new)}
+  .chip.mem.done{background:var(--mem-bg);border-color:transparent;color:var(--mem)}
+  .chip.sen.done{background:var(--sen-bg);border-color:transparent;color:var(--sen)}
+  .link-btn{background:none;border:0;padding:4px 2px;cursor:pointer;color:var(--muted);text-decoration:underline;text-underline-offset:3px;font-size:13px}
+  .link-btn:hover{color:var(--danger)}
+
+  /* ---------- Görev kartları ---------- */
+  .task{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 20px 24px;margin-top:16px;position:relative;overflow:hidden}
+  .task::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent)}
+  .task.new{--accent:var(--new);--accent-bg:var(--new-bg)}
+  .task.mem{--accent:var(--mem);--accent-bg:var(--mem-bg)}
+  .task.sen{--accent:var(--sen);--accent-bg:var(--sen-bg)}
+  .task-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .task h2{font-family:var(--serif);font-size:21px;margin:0;display:flex;align-items:center;line-height:1.25}
+  .badge{flex:0 0 auto;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--sans);font-weight:800;font-size:14px;margin-right:10px}
+  .hint{color:var(--muted);font-size:14px;margin:4px 0 0 38px}
+  .status{font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--accent-bg);color:var(--accent);white-space:nowrap}
+  .task-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+  .empty{background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:16px;color:var(--muted);font-size:14px}
+
+  .btn{border:0;border-radius:11px;padding:10px 18px;cursor:pointer;background:var(--accent,var(--ink));color:#fff;font-weight:700;font-size:15px;transition:filter .15s,transform .05s}
+  .btn:hover{filter:brightness(1.08)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#fff}
+  .btn.sm{padding:7px 12px;font-size:13px}
+  .btn.danger{color:var(--danger)}
+  .icon-btn{border:1px solid var(--line);background:#fff;border-radius:10px;width:40px;height:40px;cursor:pointer;display:inline-grid;place-items:center;font-size:15px;flex:0 0 auto}
+  .icon-btn:hover{border-color:var(--accent,#cfc3ad)}
+
+  input[type=text], input[type=search], textarea, select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}
+  select{width:auto;cursor:pointer}
+  input[type=text]:focus, input[type=search]:focus, textarea:focus, select:focus{outline:2px solid var(--accent,var(--ink));outline-offset:0;border-color:transparent}
+  textarea{min-height:66px;resize:vertical;line-height:1.45}
+
+  /* Yeni kelime satırları */
+  .rows{display:grid;gap:8px}
+  .row{display:grid;grid-template-columns:26px 1fr 1fr auto;grid-template-areas:"num en tr acts";gap:8px;align-items:center}
+  .row .num{grid-area:num;color:var(--muted);font-weight:800;text-align:center}
+  .row .en{grid-area:en;font-weight:700}
+  .row .tr{grid-area:tr}
+  .row .acts{grid-area:acts;display:flex;gap:6px}
+  .row.err input{border-color:var(--danger);background:#fff6f5}
+
+  /* Ezber kartları */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px}
+  .fc{perspective:900px}
+  .fc-inner{position:relative;height:116px;transition:transform .45s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;cursor:pointer;border-radius:14px}
+  .fc-inner:focus-visible{outline:2px solid var(--mem);outline-offset:3px}
+  .fc.flipped .fc-inner{transform:rotateY(180deg)}
+  .fc-face{position:absolute;inset:0;border-radius:14px;display:grid;place-items:center;padding:14px;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--line);font-weight:700;font-size:19px;overflow-wrap:anywhere}
+  .fc-front{background:#fff}
+  .fc-back{background:var(--mem-bg);color:var(--mem);transform:rotateY(180deg);border-color:transparent}
+  .fc-face .icon-btn{position:absolute;top:6px;right:6px;width:30px;height:30px;font-size:13px;border-color:transparent;background:transparent}
+  .fc.flipped .fc-front .icon-btn{pointer-events:none}
+  .fc.learned .fc-front{border-color:var(--mem);box-shadow:inset 0 0 0 1px var(--mem)}
+  .fc-hint{position:absolute;bottom:6px;left:0;right:0;font-size:11px;font-weight:600;color:var(--muted);text-align:center}
+  .toggle{width:100%;margin-top:8px;font-size:13px;font-weight:700;border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px;cursor:pointer}
+  .toggle:hover{border-color:var(--mem)}
+  .toggle.on{background:var(--mem);border-color:var(--mem);color:#fff}
+
+  /* Test modu */
+  .quiz{border:1px dashed var(--mem);border-radius:14px;padding:16px 18px;margin-top:16px;background:#fffaf1}
+  .quiz-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .quiz .q{font-family:var(--serif);font-size:28px;margin:2px 0 12px;line-height:1.2}
+  .quiz-form{display:flex;gap:8px;flex-wrap:wrap}
+  .quiz-form input{flex:1 1 200px}
+  .fb{margin:10px 0 0;font-weight:600}
+  .fb.ok{color:var(--sen)} .fb.bad{color:var(--danger)}
+
+  /* Cümleler */
+  .sent{display:grid;gap:14px}
+  .sent-label{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .sent-label .w{font-weight:800;font-size:17px}
+  .sent-label .icon-btn{width:30px;height:30px;font-size:13px}
+  .check{font-size:12.5px;margin-top:4px;color:var(--muted);font-weight:600}
+  .check.ok{color:var(--sen)} .check.warn{color:var(--mem)}
+
+  /* Alt kısım */
+  .foot{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+  .foot-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .foot-actions label.btn{display:inline-block}
+
+  .loading{padding:40px 0;text-align:center;color:var(--muted)}
+
+  /* Giriş ekranı (Firebase) */
+  .login{position:fixed;inset:0;background:rgba(246,241,230,.96);display:grid;place-items:center;z-index:20;padding:20px}
+  .login-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;max-width:380px;text-align:center}
+  .login-card h2{font-family:var(--serif);margin:0 0 8px}
+
+  #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;font-size:14px;font-weight:600;z-index:30;max-width:min(92vw,520px);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* ---------- Bölüm sekmeleri ---------- */
+  .views{display:flex;gap:4px;background:#ece4d3;border-radius:14px;padding:4px;margin:24px 0 0;width:max-content;max-width:100%;overflow-x:auto}
+  .view-tab{border:0;background:transparent;border-radius:10px;padding:9px 16px;font-weight:700;font-size:14px;cursor:pointer;color:var(--muted);white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:6px}
+  .view-tab:hover{color:var(--ink)}
+  .view-tab.active{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .view-tab .count{font-size:12px;background:var(--paper);border-radius:999px;padding:1px 8px}
+  .show-sm{display:none}
+  .first-hint{margin:12px 0 0;font-size:14px;color:var(--muted)}
+  .first-hint button{background:none;border:0;padding:0;cursor:pointer;color:var(--new);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+  /* ---------- Tüm kelimeler ---------- */
+  .task.bank{--accent:#6a43b8;--accent-bg:#efe9fa}
+  .bank-tools{display:flex;gap:8px;flex-wrap:wrap}
+  .bank-tools input{flex:1 1 240px;width:auto}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .fchip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
+  .fchip:hover{border-color:var(--accent)}
+  .fchip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .fchip span{opacity:.7;font-weight:600;margin-left:2px}
+  .wlist{margin-top:10px}
+  .wrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:12px 2px;border-top:1px solid var(--line)}
+  .daytag{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:3px 8px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;margin-top:3px}
+  .daytag:hover{border-color:var(--accent);color:var(--accent)}
+  .wline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .wen{font-size:17px}
+  .wtr{color:var(--muted)}
+  .wline .icon-btn{width:28px;height:28px;font-size:12px}
+  .wsent{margin:4px 0 0;font-size:14px;font-style:italic;color:#4a4f5c}
+  .wflags{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+  .flag{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:#a59d8d;background:transparent;white-space:nowrap}
+  .flag.mem.on{background:var(--mem-bg);color:var(--mem);border-color:transparent}
+  .flag.sen.on{background:var(--sen-bg);color:var(--sen);border-color:transparent}
+  button.flag{cursor:pointer}
+  button.flag:hover{border-color:var(--danger)}
+  .flag.hard.on{background:#fde8e6;color:var(--danger);border-color:transparent}
+  .flag.hard:not(.on){filter:grayscale(1);opacity:.75}
+
+  .study{border:1px dashed var(--accent);border-radius:14px;padding:16px 18px;margin-top:14px;background:#faf7ff}
+  .study-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 18px;text-align:center;margin:10px 0 12px;cursor:pointer;position:relative;min-height:150px}
+  .study-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .study-card .q{font-family:var(--serif);font-size:32px;margin:6px 0;line-height:1.2;overflow-wrap:anywhere}
+  .study-card .answer{font-size:22px;font-weight:800;color:var(--accent);margin-top:6px}
+  .study-card .icon-btn{position:absolute;top:8px;right:8px;width:32px;height:32px}
+  .study-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .btn.no{background:var(--danger)}
+  .btn.yes{background:var(--sen)}
+  .kbd{font-size:12px;color:var(--muted);margin:10px 0 0}
+
+  /* ---------- Yardım ---------- */
+  .task.help{--accent:var(--ink)}
+  .help h3{font-family:var(--serif);font-size:19px;margin:22px 0 8px}
+  .help ol, .help ul{margin:0;padding-left:22px}
+  .help li{margin:7px 0}
+  .plan{width:100%;border-collapse:collapse;font-size:14px;margin-top:4px}
+  .plan th, .plan td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  .plan th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .plan td:first-child{font-weight:800}
+  .plan td.n{color:var(--new);font-weight:700} .plan td.m{color:var(--mem);font-weight:700} .plan td.s{color:var(--sen);font-weight:700}
+
+  /* ---------- İstatistik ---------- */
+  .task.statsv{--accent:var(--new);--accent-bg:var(--new-bg)}
+  .hero{display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap}
+  .hero-label{font-size:14px;font-weight:700;color:var(--muted)}
+  .hero-num{font-family:var(--sans);font-size:64px;font-weight:800;line-height:1;letter-spacing:-.02em;margin:4px 0 6px}
+  .hero-sub{font-size:14px;color:var(--muted)}
+  .hero-sub .up{color:var(--sen);font-weight:700}
+  .goal{flex:1 1 260px;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .goal-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px}
+  .meter{height:8px;border-radius:999px;background:#dfe6fb;overflow:hidden;margin:10px 0 8px}
+  .meter i{display:block;height:100%;background:var(--new);border-radius:999px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:18px}
+  .tile{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff}
+  .tile .l{font-size:13px;color:var(--muted);font-weight:700}
+  .tile .v{font-size:26px;font-weight:800;line-height:1.2;margin-top:2px}
+  .tile .s{font-size:12px;color:var(--muted)}
+  .chart-block{margin-top:26px}
+  .chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .chart-block h3{font-family:var(--serif);font-size:19px;margin:0}
+  .legend{display:flex;gap:16px;font-size:13px;font-weight:600}
+  .legend .key{display:inline-block;width:16px;height:2px;border-radius:2px;vertical-align:middle;margin-right:6px}
+  .chart-wrap{position:relative}
+  .chart-wrap svg{display:block;max-width:100%;touch-action:pan-y}
+  .chart-wrap svg:focus-visible{outline:2px solid var(--new);outline-offset:4px;border-radius:6px}
+  .chart-wrap .grid{stroke:#ece5d6;stroke-width:1}
+  .chart-wrap .axis{stroke:#d6ccb8;stroke-width:1}
+  .chart-wrap .tick{font-size:11px;fill:var(--muted);font-family:var(--sans);font-variant-numeric:tabular-nums}
+  .chart-wrap .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  .chart-wrap .endlbl{font-size:12px;font-weight:700;fill:var(--ink);font-family:var(--sans)}
+  .chart-wrap .xhair{stroke:#bdb3a0;stroke-width:1}
+  .tip{position:absolute;top:6px;pointer-events:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px;box-shadow:0 6px 18px rgba(0,0,0,.08);white-space:nowrap;z-index:2}
+  .tip .d{color:var(--muted);font-size:12px;margin-bottom:4px}
+  .tip .r{display:flex;align-items:center;gap:8px}
+  .tip .r b{font-size:15px;min-width:22px}
+  .tip .k{width:12px;height:2px;border-radius:2px}
+  details.tbl{margin-top:8px;font-size:13px}
+  details.tbl summary{cursor:pointer;color:var(--muted);font-weight:600}
+  table.data{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+  table.data th, table.data td{border-bottom:1px solid var(--line);padding:8px 8px;text-align:left;white-space:nowrap}
+  table.data th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  table.data .num{text-align:right;font-variant-numeric:tabular-nums}
+  table.data .daytag{margin:0}
+
+  @media (max-width:640px){
+    .wrap{padding:22px 14px 56px}
+    .views{width:100%;flex-wrap:wrap}
+    .view-tab{flex:1 1 calc(50% - 4px);padding:9px 6px;font-size:13px}
+    table.data th{letter-spacing:0;font-size:11px}
+    .hero-num{font-size:52px}
+    table.data th, table.data td{padding:7px 4px;font-size:13px}
+    .hide-sm{display:none}
+    .show-sm{display:inline}
+    .wrow{grid-template-columns:1fr;gap:6px}
+    .daytag{justify-self:start}
+    .wflags{justify-content:flex-start}
+    .study-card .q{font-size:27px}
+    .plan th, .plan td{padding:7px 5px;font-size:13px}
+    .how{grid-template-columns:1fr;gap:6px}
+    .how .step{flex-direction:row;gap:8px;align-items:baseline;padding:9px 12px}
+    .task{padding:16px 14px 16px 18px}
+    .hint{margin-left:0}
+    .row{grid-template-columns:22px 1fr auto;grid-template-areas:"num en acts" ". tr tr";row-gap:6px;padding-bottom:6px;border-bottom:1px dashed var(--line)}
+    .rows .row:nth-last-child(2){border-bottom:0}
+    .how .step b{white-space:nowrap}
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .dtitle{font-size:26px}
+  }
+  @media (prefers-reduced-motion:reduce){ .fc-inner{transition:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Günlük kelime çalışması</p>
+      <h1>Kelime Defteri</h1>
+      <p class="sub">Her gün 5 yeni kelime · ertesi gün ezber · iki gün sonra cümle</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="views" role="tablist" aria-label="Bölümler">
+    <button type="button" class="view-tab active" role="tab" aria-selected="true" data-action="view" data-view="daily">📅 Günlük<span class="hide-sm"> çalışma</span></button>
+    <button type="button" class="view-tab" role="tab" aria-selected="false" data-action="view" data-view="bank">📚 <span class="hide-sm">Tüm kelimeler</span><span class="show-sm">Kelimeler</span> <span class="count" id="bank-count">0</span></button>
+    <button type="button" class="view-tab" role="tab" aria-selected="false" data-action="view" data-view="stats">📊 İstatistik</button>
+    <button type="button" class="view-tab" role="tab" aria-selected="false" data-action="view" data-view="help">❓ <span class="hide-sm">Nasıl kullanılır?</span><span class="show-sm">Yardım</span></button>
+  </div>
+
+  <!-- ============ GÜNLÜK ÇALIŞMA ============ -->
+  <div id="view-daily">
+    <section class="how" aria-label="Sistem nasıl işler">
+      <div class="step new"><b>1 · YENİ</b><span>Bugün 5 yeni kelime ekle.</span></div>
+      <div class="step mem"><b>2 · EZBERLE</b><span>Dünkü 5 kelimeyi ezberle.</span></div>
+      <div class="step sen"><b>3 · CÜMLE KUR</b><span>İki gün önceki kelimelerle cümle yaz.</span></div>
+    </section>
+
+    <nav class="daynav" id="daynav" aria-label="Günler"></nav>
+
+    <main id="day">
+      <div class="loading" id="loading">Yükleniyor…</div>
+      <div id="dayhead"></div>
+      <div id="sec-new"></div>
+      <div id="sec-mem"></div>
+      <div id="sec-sen"></div>
+    </main>
+  </div>
+
+  <!-- ============ TÜM KELİMELER ============ -->
+  <div id="view-bank" hidden>
+    <section class="task bank">
+      <div class="task-head">
+        <div>
+          <h2>Tüm kelimeler</h2>
+          <p class="hint" style="margin-left:0">Bugüne kadar eklediğin bütün kelimeler, anlamları ve kurduğun cümleler. Ara, filtrele, istediğin listeyle tekrar çalış.</p>
+        </div>
+        <span class="status" id="bank-status"></span>
+      </div>
+      <div class="bank-tools">
+        <input type="search" id="bank-q" placeholder="Ara: kelime, anlam ya da cümle…" aria-label="Kelime ara" autocomplete="off" spellcheck="false">
+        <select id="bank-sort" aria-label="Sıralama">
+          <option value="new">Yeni günler önce</option>
+          <option value="old">Eski günler önce</option>
+          <option value="az">A → Z</option>
+        </select>
+      </div>
+      <div class="filters" id="bank-filters"></div>
+      <div class="task-foot" id="bank-actions"></div>
+      <div id="study"></div>
+      <div id="bank-list"></div>
+    </section>
+  </div>
+
+  <!-- ============ İSTATİSTİK ============ -->
+  <div id="view-stats" hidden>
+    <section class="task statsv">
+      <div class="task-head">
+        <div>
+          <h2>İstatistik</h2>
+          <p class="hint" style="margin-left:0">Bir kelimeyi “Ezberledim” diye işaretlediğinde ya da testte doğru bildiğinde öğrenilmiş sayılır.</p>
+        </div>
+      </div>
+      <div id="stats-body"></div>
+    </section>
+  </div>
+
+  <!-- ============ NASIL KULLANILIR ============ -->
+  <div id="view-help" hidden>
+    <section class="task help">
+      <h2>Bu siteyle nasıl çalışırım?</h2>
+      <p class="muted" style="margin:6px 0 0">Günde 10–15 dakika yeter. Her kelime üç gün boyunca seninle: <b>eklenir → ezberlenir → cümlede kullanılır.</b></p>
+
+      <h3>Her gün</h3>
+      <ol>
+        <li><b>Günü aç.</b> Siteye girince son gün açılır. Yeni bir güne başlıyorsan gün sekmelerinin sonundaki <b>+ Yeni gün</b> butonuna bas.</li>
+        <li><b>Ezberle (turuncu).</b> Dünkü 5 kelimenin kartlarını çevir, 🔊 ile dinle. Ezberleyince <b>Ezberledim</b>'e bas ya da <b>Kendini test et</b> ile Türkçesinden İngilizcesini yaz: doğru bildiklerin kendiliğinden işaretlenir.</li>
+        <li><b>Cümle kur (yeşil).</b> İki gün önceki 5 kelimenin her biriyle bir İngilizce cümle yaz. Kutudan çıkınca kaydedilir.</li>
+        <li><b>Yeni kelimeler (mavi).</b> Bugünün 5 kelimesini ve Türkçe anlamlarını yaz, <b>Kelimeleri kaydet</b>'e bas.</li>
+        <li>Gün sekmesindeki üç nokta dolunca o günün işi biter, yanına <b>✓</b> gelir.</li>
+      </ol>
+      <p class="muted small">Sıra şart değil ama önce eskileri tekrar edip sonra yenileri eklemek akılda tutmayı kolaylaştırır.</p>
+
+      <h3>Hangi gün ne yapılır?</h3>
+      <table class="plan">
+        <thead><tr><th>Gün</th><th>Yeni ekle</th><th>Ezberle</th><th>Cümle kur</th></tr></thead>
+        <tbody>
+          <tr><td>1. gün</td><td class="n">1. günün kelimeleri</td><td>—</td><td>—</td></tr>
+          <tr><td>2. gün</td><td class="n">2. günün kelimeleri</td><td class="m">1. günün kelimeleri</td><td>—</td></tr>
+          <tr><td>3. gün</td><td class="n">3. günün kelimeleri</td><td class="m">2. günün kelimeleri</td><td class="s">1. günün kelimeleri</td></tr>
+          <tr><td>4. gün</td><td class="n">4. günün kelimeleri</td><td class="m">3. günün kelimeleri</td><td class="s">2. günün kelimeleri</td></tr>
+        </tbody>
+      </table>
+      <p class="muted small">…ve böyle devam eder.</p>
+
+      <h3>Tekrar için: Tüm kelimeler</h3>
+      <ul>
+        <li><b>Tüm kelimeler</b> sekmesinde eklediğin her kelime, anlamı, hangi gün eklendiği ve kurduğun cümleyle birlikte durur.</li>
+        <li>Arama kutusu kelimede, anlamda ve cümlelerde arar. Filtrelerle sadece <b>Ezberlenmemiş</b>, <b>Cümlesi yok</b> ya da <b>Zor</b> kelimeleri görebilirsin.</li>
+        <li><b>Bu listeyle çalış</b> o an ekranda görünen kelimelerle kart kart tekrar yaptırır. Yönü seçebilirsin: İngilizce → Türkçe, Türkçe → İngilizce ya da karışık.</li>
+        <li>Bilemediğin kelimeler <b>🔁 zor</b> olarak işaretlenir, bildiğinde işaret kalkar. Haftada bir <b>Zor</b> filtresini seçip tekrar çalışmak iyi bir alışkanlık.</li>
+      </ul>
+
+      <h3>İlerlemeni takip et: İstatistik</h3>
+      <ul>
+        <li><b>📊 İstatistik</b> sekmesinde kaç kelime öğrendiğini, son 7 günde kaç tane eklendiğini, sıradaki hedefini ve kaç gündür üst üste çalıştığını görürsün.</li>
+        <li>Grafik, eklediğin ve öğrendiğin kelime sayısının zaman içinde nasıl arttığını gösterir. Altındaki tabloda her günün 5 kelimesinden kaçını ezberleyip kaçıyla cümle kurduğun yazar.</li>
+      </ul>
+
+      <h3>Bilmen gerekenler</h3>
+      <ul>
+        <li><b>Bir gün kaçırırsan</b> sorun yok: gün numaraları takvime değil senin çalışmana göre ilerler. Döndüğünde <b>+ Yeni gün</b>'e basıp kaldığın yerden devam et.</li>
+        <li>Aynı tarihte ikinci bir gün açmak ya da 5 kelimeyi tamamlamadan yeni güne geçmek istersen site uyarır; eminsen butona bir kez daha bas.</li>
+        <li>Yanlışlıkla açtığın son günü, gün başlığının yanındaki <b>Bu günü sil</b> ile kaldırabilirsin.</li>
+        <li id="storage-note">Firebase bağlanana kadar veriler <b>sadece bu tarayıcıda</b> durur. Tarayıcı verilerini silersen kaybolur; ara sıra en alttaki <b>Dışa aktar</b> ile yedek al.</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer class="foot">
+    <span id="store-label"></span>
+    <div class="foot-actions">
+      <button class="btn ghost sm" type="button" data-action="export">Dışa aktar (JSON)</button>
+      <label class="btn ghost sm" title="Seçtiğin yedek, mevcut verilerin yerine geçer">İçe aktar<input type="file" id="import-file" accept="application/json,.json" hidden /></label>
+      <button class="btn ghost sm" type="button" data-action="logout" id="logout-btn" hidden>Çıkış yap</button>
+      <button class="btn ghost sm danger" type="button" data-action="reset">Sıfırla</button>
+    </div>
+  </footer>
+</div>
+
+<div id="login" class="login" hidden>
+  <div class="login-card">
+    <h2>Kelime Defteri</h2>
+    <p class="muted">Kelimelerin her cihazda aynı olsun diye Google hesabınla giriş yap.</p>
+    <button class="btn" type="button" id="login-btn">Google ile giriş yap</button>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* =====================================================================
+   AYARLAR
+   Firebase'e geçmek için:
+   1) Firebase konsolunda proje aç, Firestore ve Authentication > Google'ı etkinleştir
+   2) Proje ayarlarındaki web uygulaması bilgilerini firebaseConfig'e yapıştır
+   3) USE_FIREBASE: true yap
+   ===================================================================== */
+const CONFIG = {
+  USE_FIREBASE: false,
+  FIREBASE_VERSION: '10.12.2',
+  firebaseConfig: {
+    apiKey: '',
+    authDomain: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: '',
+    appId: ''
+  }
+};
+
+const WORDS_PER_DAY = 5;
+const LS_KEY = 'kelimeDefteri.v1';
+const TASKS = ['new', 'mem', 'sen'];
+const EXAMPLES = [['achieve','başarmak'],['brave','cesur'],['improve','geliştirmek'],['journey','yolculuk'],['borrow','ödünç almak']];
+
+/* Uygulama durumu
+   Bir gün: { n: 1, date: '2026-11-12', words: [ { id, en, tr, learned, sentence } ] }
+   - learned  -> ertesi gün (ezber) işaretlenir
+   - sentence -> iki gün sonra (cümle kur) yazılır
+   - hard     -> "Tüm kelimeler" tekrarında bilinemeyen kelime                        */
+const state = {
+  days: [], active: 1, quiz: null, flipped: new Set(), dirtyWords: false,
+  view: 'daily',                                   // 'daily' | 'bank' | 'help'
+  bank: { q: '', filter: 'all', sort: 'new', dir: 'en-tr' },
+  study: null
+};
+
+/* ---------- Yardımcılar ---------- */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const dayByN = n => state.days.find(d => d.n === n);
+const lastN = () => state.days.reduce((m, d) => Math.max(m, d.n), 0);
+const canSpeak = 'speechSynthesis' in window;
+
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function fmtDate(s) {
+  try { return new Date(s + 'T00:00:00').toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', weekday: 'long' }); }
+  catch (e) { return s; }
+}
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+// Karşılaştırma için sadeleştir: küçük harf, noktalama yok, baştaki "to " yok
+const norm = s => String(s ?? '').toLowerCase().replace(/[’`]/g, "'").replace(/[.,!?;:"()]/g, '').replace(/\s+/g, ' ').trim().replace(/^to /, '');
+
+function speak(text) {
+  if (!canSpeak || !text) return;
+  try {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 0.9;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  } catch (e) {}
+}
+const speakBtn = text => canSpeak
+  ? `<button type="button" class="icon-btn" data-action="speak" data-text="${esc(text)}" title="Telaffuzu dinle" aria-label="${esc(text)} telaffuzu">🔊</button>` : '';
+
+let toastTimer;
+function toast(msg) {
+  const el = $('#toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+// alert/confirm yerine: aynı butona 5 sn içinde ikinci kez basınca onaylanır
+let pending = null;
+function confirmTwice(key, msg) {
+  const now = Date.now();
+  if (pending && pending.key === key && now - pending.t < 5000) { pending = null; return true; }
+  pending = { key, t: now }; toast(msg); return false;
+}
+
+function newDay(n) { return { n, date: todayStr(), words: [] }; }
+
+// Dışarıdan gelen veriyi (localStorage, Firebase, JSON) güvenli biçime getir
+function normalize(days) {
+  if (!Array.isArray(days)) return [];
+  const seen = new Set();
+  return days
+    .filter(d => d && Number.isInteger(+d.n) && +d.n > 0 && !seen.has(+d.n) && seen.add(+d.n))
+    .map(d => ({
+      n: +d.n,
+      date: typeof d.date === 'string' ? d.date : todayStr(),
+      words: (Array.isArray(d.words) ? d.words : [])
+        .filter(w => w && String(w.en || '').trim())
+        .slice(0, WORDS_PER_DAY)
+        .map(w => ({ id: String(w.id || uid()), en: String(w.en).trim(), tr: String(w.tr || '').trim(), learned: !!w.learned, learnedAt: typeof w.learnedAt === 'string' ? w.learnedAt : '', sentence: String(w.sentence || ''), hard: !!w.hard }))
+    }))
+    .sort((a, b) => a.n - b.n);
+}
+
+/* =====================================================================
+   VERİ KATMANI — tüm okuma/yazma buradan geçer.
+   İki uygulaması var: LocalStore (localStorage) ve FirebaseStore (Firestore).
+   Ortak arayüz: init(), loadDays(), saveDay(day), deleteDay(n), replaceAll(days)
+   ===================================================================== */
+let memoryCopy = null; // localStorage kapalıysa (gizli sekme vb.) bellekte tut
+const LocalStore = {
+  label: 'Veriler bu tarayıcıda saklanıyor (localStorage)',
+  note: 'Firebase bağlanana kadar veriler <b>sadece bu tarayıcıda</b> durur. Tarayıcı verilerini silersen kaybolur; ara sıra en alttaki <b>Dışa aktar</b> ile yedek al.',
+  async init() {},
+  async loadDays() {
+    try { const raw = localStorage.getItem(LS_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+    return memoryCopy || [];
+  },
+  _write() {
+    memoryCopy = JSON.parse(JSON.stringify(state.days));
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state.days)); } catch (e) {}
+  },
+  async saveDay() { this._write(); },
+  async deleteDay() { this._write(); },
+  async replaceAll() { this._write(); }
+};
+
+const FirebaseStore = {
+  label: 'Veriler Firebase’de saklanıyor',
+  note: 'Kelimeler <b>Firebase’de</b> saklanır: aynı Google hesabıyla girdiğin her cihazda aynı kelimeleri görürsün. Yine de ara sıra <b>Dışa aktar</b> ile yedek almak iyi olur.',
+  fs: null, db: null, auth: null, authMod: null, uid: null,
+  async init() {
+    const base = `https://www.gstatic.com/firebasejs/${CONFIG.FIREBASE_VERSION}`;
+    const [appMod, fs, authMod] = await Promise.all([
+      import(`${base}/firebase-app.js`),
+      import(`${base}/firebase-firestore.js`),
+      import(`${base}/firebase-auth.js`)
+    ]);
+    const app = appMod.initializeApp(CONFIG.firebaseConfig);
+    this.fs = fs; this.authMod = authMod;
+    this.db = fs.getFirestore(app);
+    this.auth = authMod.getAuth(app);
+    let user = await new Promise(res => { const off = authMod.onAuthStateChanged(this.auth, u => { off(); res(u); }); });
+    if (!user) user = await askLogin(this);
+    this.uid = user.uid;
+    this.label = `Firebase’e bağlı · ${user.email || 'giriş yapıldı'}`;
+  },
+  // Firestore yolu: users/{uid}/gunler/{gün numarası}
+  col() { return this.fs.collection(this.db, 'users', this.uid, 'gunler'); },
+  ref(n) { return this.fs.doc(this.db, 'users', this.uid, 'gunler', String(n)); },
+  async loadDays() {
+    const snap = await this.fs.getDocs(this.col());
+    const out = []; snap.forEach(d => out.push(d.data()));
+    return out;
+  },
+  async saveDay(day) { await this.fs.setDoc(this.ref(day.n), day); },
+  async deleteDay(n) { await this.fs.deleteDoc(this.ref(n)); },
+  async replaceAll(days) {
+    const snap = await this.fs.getDocs(this.col());
+    await Promise.all(snap.docs.map(d => this.fs.deleteDoc(d.ref)));
+    await Promise.all(days.map(d => this.fs.setDoc(this.ref(d.n), d)));
+  },
+  async logout() { await this.authMod.signOut(this.auth); location.reload(); }
+};
+
+/* claude.ai'da link olarak açıldığında: veriler kullanıcının Claude hesabında,
+   kişiye özel alanda (data/users/<id>/gun-<n>) tutulur; her cihazda aynıdır. */
+const ArtifactStore = {
+  label: 'Veriler Claude hesabında saklanıyor · her cihazda aynı',
+  note: 'Bu linkte kelimeler <b>Claude hesabında</b> saklanır: telefonda ve bilgisayarda aynı hesapla açınca aynı kelimeleri görürsün. Yine de ara sıra <b>Dışa aktar</b> ile yedek almak iyi olur.',
+  db: null, uid: null, _pending: {}, _running: {},
+  async init() {
+    const db = await window.claude.use('db');
+    const user = db ? await window.claude.use('user') : null;
+    const uid = user ? await user.id() : null;
+    if (!db || !uid) throw new Error('Claude hesabına bağlanılamadı');
+    this.db = db; this.uid = uid;
+  },
+  col() { return this.db.collection('data/users/' + this.uid); },
+  key(n) { return 'gun-' + n; },
+  async loadDays() {
+    const snap = await this.col().get();
+    return snap.docs.filter(d => d.exists && d.id.startsWith('gun-')).map(d => d.data());
+  },
+  async _set(key, body) {
+    try { await this.col().doc(key).set(body); }
+    catch (e) {
+      if (!e || e.code !== 'unavailable') throw e;
+      await new Promise(r => setTimeout(r, 400 + Math.random() * 800));
+      await this.col().doc(key).set(body);
+    }
+  },
+  // Aynı belgeye aynı anda tek yazma: bekleyen değişiklikler sırayla, en sonuncusu yazılır
+  saveDay(day) {
+    const key = this.key(day.n);
+    this._pending[key] = JSON.parse(JSON.stringify(day));
+    if (!this._running[key]) this._running[key] = this._drain(key);
+    return this._running[key];
+  },
+  async _drain(key) {
+    try {
+      while (this._pending[key]) {
+        const body = this._pending[key]; delete this._pending[key];
+        await this._set(key, body);
+      }
+    } finally { delete this._running[key]; }
+  },
+  async deleteDay(n) {
+    const key = this.key(n);
+    delete this._pending[key];
+    if (this._running[key]) { try { await this._running[key]; } catch (e) {} }
+    await this.col().doc(key).delete();
+  },
+  async replaceAll(days) {
+    const keep = new Set(days.map(d => this.key(d.n)));
+    const snap = await this.col().get();
+    for (const d of snap.docs) if (d.id.startsWith('gun-') && !keep.has(d.id)) await this.deleteDay(+d.id.slice(4));
+    for (const d of days) await this.saveDay(d);
+  }
+};
+const inArtifact = () => !!(window.claude && typeof window.claude.use === 'function');
+
+function askLogin(fb) {
+  return new Promise(resolve => {
+    $('#login').hidden = false;
+    $('#login-btn').onclick = async () => {
+      try {
+        const r = await fb.authMod.signInWithPopup(fb.auth, new fb.authMod.GoogleAuthProvider());
+        $('#login').hidden = true; resolve(r.user);
+      } catch (e) { console.error(e); toast('Giriş yapılamadı: ' + (e.code || e.message)); }
+    };
+  });
+}
+
+let Store = LocalStore;
+async function persist(fn) {
+  try { await fn(); }
+  catch (e) { console.error(e); toast('Kaydedilemedi: ' + (e.message || e)); }
+}
+
+/* =====================================================================
+   GÖREV DURUMU
+   N. gün: [N. günün kelimeleri eklendi mi, (N-1) ezberlendi mi, (N-2) cümleleri yazıldı mı]
+   'done' | 'todo' | 'na' (o gün için geçerli değil)
+   ===================================================================== */
+function progress(n) {
+  const d = dayByN(n), p1 = dayByN(n - 1), p2 = dayByN(n - 2);
+  return [
+    d && d.words.length >= WORDS_PER_DAY ? 'done' : 'todo',
+    !p1 || !p1.words.length ? 'na' : p1.words.every(w => w.learned) ? 'done' : 'todo',
+    !p2 || !p2.words.length ? 'na' : p2.words.every(w => w.sentence.trim()) ? 'done' : 'todo'
+  ];
+}
+
+function checkInfo(sentence, word) {
+  const s = String(sentence || '').trim();
+  if (!s) return { cls: '', text: 'Henüz cümle yok' };
+  if (!norm(s).includes(norm(word))) return { cls: 'warn', text: `“${word}” cümlede geçmiyor gibi görünüyor` };
+  if (s.split(/\s+/).length < 3) return { cls: 'warn', text: 'Biraz daha uzun bir cümle dene' };
+  return { cls: 'ok', text: '✓ Kelime cümlede kullanılmış' };
+}
+
+/* =====================================================================
+   ÇİZİM (render)
+   ===================================================================== */
+function render() {
+  renderMeta(); renderNew(); renderMem(); renderSen();
+  if (state.view === 'bank') renderBank();
+  if (state.view === 'stats') renderStatsView();
+}
+function renderMeta() { renderStats(); renderNav(); renderDayHead(); }
+
+function renderStats() {
+  const all = state.days.flatMap(d => d.words);
+  const items = [
+    [state.days.length, 'gün'],
+    [all.length, 'kelime'],
+    [all.filter(w => w.learned).length, 'ezberlendi'],
+    [all.filter(w => w.sentence.trim()).length, 'cümle']
+  ];
+  $('#stats').innerHTML = items.map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+  $('#bank-count').textContent = all.length;
+}
+
+function renderNav() {
+  const nav = $('#daynav');
+  nav.innerHTML = state.days.map(d => {
+    const pr = progress(d.n);
+    const complete = !pr.includes('todo');
+    return `<button type="button" class="daypill ${d.n === state.active ? 'active' : ''}" data-action="goto" data-n="${d.n}" title="${esc(fmtDate(d.date))}">
+      ${d.n}. Gün
+      <span class="dots" aria-hidden="true">${pr.map((s, i) => `<i class="dot ${TASKS[i]} ${s}"></i>`).join('')}</span>
+      ${complete ? '<span class="tick" aria-label="tamamlandı">✓</span>' : ''}
+    </button>`;
+  }).join('') + `<button type="button" class="daypill add" data-action="new-day">+ Yeni gün</button>`;
+  const act = $('.daypill.active', nav);
+  if (act) nav.scrollLeft = Math.max(0, act.offsetLeft - nav.clientWidth / 2 + act.clientWidth / 2);
+}
+
+function renderDayHead() {
+  const d = dayByN(state.active);
+  const pr = progress(d.n);
+  const labels = ['5 yeni kelime', 'Ezber', 'Cümle'];
+  const chips = pr.map((s, i) => s === 'na' ? '' :
+    `<span class="chip ${TASKS[i]} ${s}">${s === 'done' ? '✓ ' : ''}${labels[i]}</span>`).join('');
+  const canDelete = d.n === lastN() && d.n > 1;
+  $('#dayhead').innerHTML = `<div class="dayhead">
+      <div>
+        <p class="eyebrow">${esc(fmtDate(d.date))}${d.date === todayStr() ? ' · bugün' : ''}</p>
+        <h2 class="dtitle">${d.n}. Gün</h2>
+      </div>
+      <div class="dayhead-right">
+        <div class="chips">${chips}</div>
+        ${canDelete ? '<button type="button" class="link-btn" data-action="delete-day">Bu günü sil</button>' : ''}
+      </div>
+    </div>`;
+}
+
+/* ---- 1) Yeni kelimeler ---- */
+function renderNew() {
+  const d = dayByN(state.active);
+  const rows = Array.from({ length: WORDS_PER_DAY }, (_, i) => {
+    const w = d.words[i];
+    const [exEn, exTr] = EXAMPLES[i];
+    return `<div class="row" data-id="${w ? esc(w.id) : ''}">
+        <span class="num">${i + 1}</span>
+        <input type="text" class="en" value="${w ? esc(w.en) : ''}" placeholder="İngilizce · ${exEn}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${i + 1}. kelime (İngilizce)">
+        <input type="text" class="tr" value="${w ? esc(w.tr) : ''}" placeholder="Türkçe · ${exTr}" autocomplete="off" aria-label="${i + 1}. kelimenin Türkçe anlamı">
+        <div class="acts">
+          ${canSpeak ? '<button type="button" class="icon-btn" data-action="speak-row" title="Telaffuzu dinle" aria-label="Telaffuzu dinle">🔊</button>' : ''}
+          <button type="button" class="icon-btn" data-action="clear-row" title="Satırı temizle" aria-label="Satırı temizle">✕</button>
+        </div>
+      </div>`;
+  }).join('');
+  $('#sec-new').innerHTML = `<section class="task new">
+      <div class="task-head">
+        <div>
+          <h2><span class="badge">1</span>Bugünün yeni kelimeleri</h2>
+          <p class="hint">5 kelime ve anlamlarını yaz. ${d.n + 1}. gün bunları ezberleyecek, ${d.n + 2}. gün bunlarla cümle kuracaksın.</p>
+        </div>
+        <span class="status">${d.words.length}/${WORDS_PER_DAY}</span>
+      </div>
+      <form data-form="words" class="rows" autocomplete="off">
+        ${rows}
+        <div class="task-foot">
+          <button class="btn" type="submit">Kelimeleri kaydet</button>
+          <span class="muted small">Enter ile sonraki kutuya geçersin</span>
+        </div>
+      </form>
+      ${state.days.length === 1 && !d.words.length
+        ? '<p class="first-hint">İlk kez mi buradasın? <button type="button" data-action="view" data-view="help">Nasıl kullanılır?</button> sayfasına bir göz at.</p>' : ''}
+    </section>`;
+  state.dirtyWords = false;
+}
+
+/* ---- 2) Ezber (bir önceki gün) ---- */
+function renderMem() {
+  const n = state.active, p = dayByN(n - 1);
+  const head = (extra = '') => `<div class="task-head">
+      <div>
+        <h2><span class="badge">2</span>Ezberle${p ? ` — ${p.n}. günün kelimeleri` : ''}</h2>
+        <p class="hint">Kartın üstüne tıkla, Türkçesini gör. Ezberlediklerini işaretle ya da kendini test et.</p>
+      </div>${extra}</div>`;
+  let html;
+  if (!p) {
+    html = head() + `<div class="empty">${n === 1
+      ? 'Bugün ezberlenecek kelime yok. 2. günden itibaren burada bir önceki günün kelimeleri çıkacak.'
+      : 'Bu gün için ezberlenecek kelime yok.'}</div>`;
+  } else if (!p.words.length) {
+    html = head() + `<div class="empty">${p.n}. günde kelime eklenmemiş.</div>`;
+  } else {
+    const learned = p.words.filter(w => w.learned).length;
+    const cards = p.words.map(w => `<div class="fc ${w.learned ? 'learned' : ''} ${state.flipped.has(w.id) ? 'flipped' : ''}" data-id="${esc(w.id)}">
+        <div class="fc-inner" data-action="flip" role="button" tabindex="0" aria-label="${esc(w.en)} kartını çevir">
+          <div class="fc-face fc-front"><span>${esc(w.en)}</span>${speakBtn(w.en)}<span class="fc-hint">çevirmek için tıkla</span></div>
+          <div class="fc-face fc-back"><span>${esc(w.tr)}</span></div>
+        </div>
+        <button type="button" class="toggle ${w.learned ? 'on' : ''}" data-action="learn" data-day="${p.n}" data-id="${esc(w.id)}" aria-pressed="${w.learned}">${w.learned ? '✓ Ezberlendi' : 'Ezberledim'}</button>
+      </div>`).join('');
+    html = head(`<span class="status">${learned}/${p.words.length} ezberlendi</span>`) +
+      `<div class="cards">${cards}</div>
+       <div class="task-foot">
+         <button class="btn" type="button" data-action="quiz-start" data-day="${p.n}">Kendini test et</button>
+         <button class="btn ghost" type="button" data-action="flip-all">Hepsini çevir</button>
+       </div>
+       ${quizHtml(p)}`;
+  }
+  $('#sec-mem').innerHTML = `<section class="task mem">${html}</section>`;
+}
+
+function quizHtml(p) {
+  const q = state.quiz;
+  if (!q || q.day !== p.n) return '';
+  const total = q.order.length;
+  if (q.i >= total) {
+    const wrong = q.wrong.map(id => p.words.find(w => w.id === id)).filter(Boolean);
+    return `<div class="quiz">
+        <div class="quiz-top"><b>Sonuç: ${q.score}/${total} doğru</b><button type="button" class="link-btn" data-action="quiz-close">Kapat</button></div>
+        ${wrong.length
+          ? `<p class="muted">Tekrar bak: ${wrong.map(w => `<b>${esc(w.en)}</b> = ${esc(w.tr)}`).join(' · ')}</p>`
+          : '<p class="fb ok">Hepsi doğru! Kelimeler ezberlendi olarak işaretlendi. 🎉</p>'}
+        <div class="task-foot"><button class="btn" type="button" data-action="quiz-start" data-day="${p.n}" id="quiz-btn">Tekrar test et</button></div>
+      </div>`;
+  }
+  const w = p.words.find(x => x.id === q.order[q.i]);
+  let fb = '';
+  if (q.answered) {
+    fb = q.ok
+      ? `<p class="fb ok">✓ Doğru! <b>${esc(w.en)}</b></p>`
+      : `<p class="fb bad">✗ Doğrusu: <b>${esc(w.en)}</b>${q.given ? ` <span class="muted">(senin cevabın: ${esc(q.given)})</span>` : ''}</p>`;
+  }
+  const btnText = q.answered ? (q.i + 1 < total ? 'Sonraki →' : 'Sonucu gör') : 'Kontrol et';
+  return `<div class="quiz">
+      <div class="quiz-top"><span class="muted small">Soru ${q.i + 1}/${total}</span><button type="button" class="link-btn" data-action="quiz-close">Kapat</button></div>
+      <p class="muted small" style="margin:6px 0 0">Bu kelimenin İngilizcesi ne?</p>
+      <div class="q">${esc(w.tr)}</div>
+      <form data-form="quiz" class="quiz-form" autocomplete="off">
+        <input type="text" id="quiz-in" value="${esc(q.given || '')}" ${q.answered ? 'readonly' : ''} autocapitalize="off" spellcheck="false" placeholder="İngilizcesini yaz…" aria-label="Cevap">
+        <button class="btn" type="submit" id="quiz-btn">${btnText}</button>
+      </form>
+      ${fb}
+    </div>`;
+}
+
+/* ---- 3) Cümle kur (iki gün önce) ---- */
+function renderSen() {
+  const n = state.active, p = dayByN(n - 2);
+  let status = '', body;
+  if (!p) {
+    body = `<div class="empty">${n < 3
+      ? 'Cümle kurma 3. günden itibaren başlıyor: 3. gün, 1. günün kelimeleriyle cümle kuracaksın.'
+      : 'Bu gün için cümle kurulacak kelime yok.'}</div>`;
+  } else if (!p.words.length) {
+    body = `<div class="empty">${p.n}. günde kelime eklenmemiş.</div>`;
+  } else {
+    const written = p.words.filter(w => w.sentence.trim()).length;
+    status = `<span class="status" id="sen-status">${written}/${p.words.length} cümle</span>`;
+    const items = p.words.map(w => {
+      const c = checkInfo(w.sentence, w.en);
+      return `<div class="sent-item">
+          <div class="sent-label"><span class="w">${esc(w.en)}</span><span class="muted">${esc(w.tr)}</span>${speakBtn(w.en)}</div>
+          <textarea rows="2" data-day="${p.n}" data-id="${esc(w.id)}" data-word="${esc(w.en)}" placeholder="“${esc(w.en)}” kelimesiyle bir cümle yaz…" aria-label="${esc(w.en)} ile cümle">${esc(w.sentence)}</textarea>
+          <div class="check ${c.cls}">${esc(c.text)}</div>
+        </div>`;
+    }).join('');
+    body = `<div class="sent">${items}</div>
+      <div class="task-foot">
+        <button class="btn" type="button" data-action="save-sentences" data-day="${p.n}">Cümleleri kaydet</button>
+        <span class="muted small">Kutudan çıkınca da otomatik kaydedilir</span>
+      </div>`;
+  }
+  $('#sec-sen').innerHTML = `<section class="task sen">
+      <div class="task-head">
+        <div>
+          <h2><span class="badge">3</span>Cümle kur${p ? ` — ${p.n}. günün kelimeleri` : ''}</h2>
+          <p class="hint">İki gün önce eklediğin her kelimeyle bir İngilizce cümle yaz.</p>
+        </div>${status}
+      </div>${body}
+    </section>`;
+}
+
+/* =====================================================================
+   İŞLEMLER
+   ===================================================================== */
+async function saveWords(silent) {
+  const d = dayByN(state.active);
+  const old = new Map(d.words.map(w => [w.id, w]));
+  const words = []; let incomplete = false;
+  $$('#sec-new .row').forEach(r => {
+    const en = r.querySelector('.en').value.trim();
+    const tr = r.querySelector('.tr').value.trim();
+    r.classList.remove('err');
+    if (!en && !tr) return;
+    if (!en || !tr) { r.classList.add('err'); incomplete = true; return; }
+    const prev = old.get(r.dataset.id);
+    const same = prev && prev.en.toLowerCase() === en.toLowerCase();
+    words.push({ id: prev ? prev.id : uid(), en, tr, learned: same ? prev.learned : false, learnedAt: same ? (prev.learnedAt || '') : '', sentence: same ? prev.sentence : '', hard: same ? !!prev.hard : false });
+  });
+  if (incomplete) { toast('Her kelimenin İngilizcesini ve Türkçesini birlikte yaz.'); return false; }
+  const lower = words.map(w => w.en.toLowerCase());
+  if (new Set(lower).size !== lower.length) { toast('Aynı kelimeyi iki kez yazmışsın.'); return false; }
+
+  d.words = words;
+  renderNew(); renderMeta();
+  await persist(() => Store.saveDay(d));
+
+  const dup = words.map(w => {
+    const other = state.days.find(o => o.n !== d.n && o.words.some(x => x.en.toLowerCase() === w.en.toLowerCase()));
+    return other ? `“${w.en}” ${other.n}. günde de var` : null;
+  }).filter(Boolean);
+  if (dup.length) toast('Not: ' + dup.join(', '));
+  else if (!silent) toast(words.length === WORDS_PER_DAY ? '5 kelime kaydedildi 🎉' : `${words.length}/${WORDS_PER_DAY} kelime kaydedildi`);
+  return true;
+}
+async function flushWords() { return state.dirtyWords ? saveWords(true) : true; }
+
+async function goto(n) {
+  if (n === state.active || !dayByN(n)) return;
+  if (!(await flushWords())) return;
+  state.active = n; state.quiz = null; state.flipped.clear();
+  render();
+}
+
+async function addDay() {
+  if (!(await flushWords())) return;
+  const last = dayByN(lastN());
+  const reasons = [];
+  if (last.words.length < WORDS_PER_DAY) reasons.push(`${last.n}. günde ${last.words.length}/${WORDS_PER_DAY} kelime var`);
+  if (last.date === todayStr()) reasons.push(`bugün zaten ${last.n}. günü açtın`);
+  if (reasons.length && !confirmTwice('new-day', reasons.join(', ') + '. Yine de yeni gün açmak için tekrar tıkla.')) return;
+  const d = newDay(last.n + 1);
+  state.days.push(d); state.active = d.n; state.quiz = null; state.flipped.clear();
+  render();
+  await persist(() => Store.saveDay(d));
+  toast(`${d.n}. gün başladı`);
+}
+
+async function deleteDay() {
+  const n = lastN();
+  if (n <= 1) return;
+  if (!confirmTwice('del-' + n, `${n}. gün ve kelimeleri silinecek. Onaylamak için tekrar tıkla.`)) return;
+  state.days = state.days.filter(d => d.n !== n);
+  state.active = lastN(); state.quiz = null; state.flipped.clear();
+  render();
+  await persist(() => Store.deleteDay(n));
+  toast(`${n}. gün silindi`);
+}
+
+function flip(fc) {
+  if (!fc) return;
+  const id = fc.dataset.id;
+  fc.classList.toggle('flipped');
+  if (fc.classList.contains('flipped')) state.flipped.add(id); else state.flipped.delete(id);
+}
+function flipAll() {
+  const p = dayByN(state.active - 1); if (!p) return;
+  const ids = p.words.map(w => w.id);
+  const all = ids.every(id => state.flipped.has(id));
+  ids.forEach(id => all ? state.flipped.delete(id) : state.flipped.add(id));
+  renderMem();
+}
+
+async function toggleLearn(dayN, id) {
+  const p = dayByN(dayN), w = p && p.words.find(x => x.id === id);
+  if (!w) return;
+  w.learned = !w.learned;
+  w.learnedAt = w.learned ? todayStr() : '';
+  renderMem(); renderMeta();
+  await persist(() => Store.saveDay(p));
+}
+
+/* ---- Test modu ---- */
+function quizStart(dayN) {
+  const p = dayByN(dayN); if (!p || !p.words.length) return;
+  state.quiz = { day: dayN, order: shuffle(p.words.map(w => w.id)), i: 0, score: 0, answered: false, ok: false, given: '', wrong: [] };
+  state.flipped.clear();
+  renderMem(); focusQuiz();
+}
+function focusQuiz() {
+  const q = state.quiz; if (!q) return;
+  const el = (q.answered || q.i >= q.order.length) ? $('#quiz-btn') : $('#quiz-in');
+  if (el) el.focus();
+}
+async function quizSubmit() {
+  const q = state.quiz; if (!q) return;
+  const p = dayByN(q.day);
+  if (q.answered) { q.i++; q.answered = false; q.given = ''; renderMem(); focusQuiz(); return; }
+  const val = $('#quiz-in').value;
+  if (!val.trim()) return;
+  const w = p.words.find(x => x.id === q.order[q.i]);
+  q.answered = true; q.given = val.trim(); q.ok = norm(val) === norm(w.en);
+  let changed = false;
+  if (q.ok) { q.score++; if (!w.learned) { w.learned = true; w.learnedAt = todayStr(); changed = true; } }
+  else { q.wrong.push(w.id); if (w.learned) { w.learned = false; w.learnedAt = ''; changed = true; } }
+  renderMem(); renderMeta(); focusQuiz();
+  if (changed) await persist(() => Store.saveDay(p));
+}
+
+/* ---- Cümleler ---- */
+function updateCheck(t) {
+  const c = checkInfo(t.value, t.dataset.word);
+  const el = t.parentElement.querySelector('.check');
+  el.className = 'check ' + c.cls; el.textContent = c.text;
+}
+async function saveSentences(dayN, silent) {
+  const p = dayByN(dayN); if (!p) return;
+  let changed = false;
+  $$('#sec-sen textarea').forEach(t => {
+    const w = p.words.find(x => x.id === t.dataset.id);
+    const v = t.value.trim();
+    if (w && w.sentence !== v) { w.sentence = v; changed = true; }
+  });
+  const written = p.words.filter(w => w.sentence).length;
+  const st = $('#sen-status'); if (st) st.textContent = `${written}/${p.words.length} cümle`;
+  renderMeta();
+  if (changed) await persist(() => Store.saveDay(p));
+  if (!silent) toast(written === p.words.length ? 'Tüm cümleler kaydedildi 👏' : 'Cümleler kaydedildi');
+}
+
+/* =====================================================================
+   BÖLÜMLER (Günlük çalışma / Tüm kelimeler / Nasıl kullanılır)
+   ===================================================================== */
+const VIEW_HASH = { daily: '', bank: '#kelimeler', stats: '#istatistik', help: '#yardim' };
+async function setView(v) {
+  if (!(v in VIEW_HASH)) v = 'daily';
+  if (state.view === 'daily' && v !== 'daily') await flushWords();
+  state.view = v;
+  Object.keys(VIEW_HASH).forEach(k => { $('#view-' + k).hidden = k !== v; });
+  $$('.view-tab').forEach(b => { const on = b.dataset.view === v; b.classList.toggle('active', on); b.setAttribute('aria-selected', on); });
+  if (v === 'bank') renderBank();
+  if (v === 'stats') renderStatsView();
+  try { history.replaceState(null, '', location.pathname + location.search + VIEW_HASH[v]); } catch (e) {}
+}
+
+/* =====================================================================
+   TÜM KELİMELER
+   ===================================================================== */
+const FILTERS = [['all', 'Hepsi'], ['todo', 'Ezberlenmemiş'], ['learned', 'Ezberlendi'], ['nosent', 'Cümlesi yok'], ['hard', '🔁 Zor']];
+const allWords = () => state.days.flatMap(d => d.words.map(w => ({ w, day: d.n })));
+const findWord = (day, id) => { const d = dayByN(day); return d ? d.words.find(w => w.id === id) : null; };
+
+function filterWords(list, f) {
+  if (f === 'todo') return list.filter(x => !x.w.learned);
+  if (f === 'learned') return list.filter(x => x.w.learned);
+  if (f === 'nosent') return list.filter(x => !x.w.sentence.trim());
+  if (f === 'hard') return list.filter(x => x.w.hard);
+  return list;
+}
+function bankList() {
+  const { q, filter, sort } = state.bank;
+  let list = filterWords(allWords(), filter);
+  const nq = q.trim().toLocaleLowerCase('tr');
+  if (nq) list = list.filter(x => [x.w.en, x.w.tr, x.w.sentence].some(s => s.toLocaleLowerCase('tr').includes(nq)));
+  if (sort === 'new') list.sort((a, b) => b.day - a.day);
+  else if (sort === 'old') list.sort((a, b) => a.day - b.day);
+  else list.sort((a, b) => a.w.en.localeCompare(b.w.en, 'en', { sensitivity: 'base' }));
+  return list;
+}
+
+function renderBank() { renderBankFilters(); renderBankList(); renderStudy(); }
+
+function renderBankFilters() {
+  const all = allWords();
+  $('#bank-filters').innerHTML = FILTERS.map(([k, l]) =>
+    `<button type="button" class="fchip ${state.bank.filter === k ? 'active' : ''}" data-action="bank-filter" data-f="${k}" aria-pressed="${state.bank.filter === k}">${l} <span>${filterWords(all, k).length}</span></button>`
+  ).join('');
+}
+
+function renderBankList() {
+  const all = allWords(), list = bankList();
+  $('#bank-status').textContent = `${all.length} kelime`;
+  if (!all.length) {
+    $('#bank-actions').innerHTML = '';
+    $('#bank-list').innerHTML = '<div class="empty">Henüz kelime yok. <b>Günlük çalışma</b> sekmesinden ilk 5 kelimeni ekle; hepsi burada toplanacak.</div>';
+    return;
+  }
+  const dirs = [['en-tr', 'İngilizce → Türkçe'], ['tr-en', 'Türkçe → İngilizce'], ['mix', 'Karışık']];
+  $('#bank-actions').innerHTML = list.length
+    ? `<button class="btn" type="button" data-action="study-start">▶ Bu listeyle çalış (${list.length})</button>
+       <select id="study-dir" aria-label="Çalışma yönü">${dirs.map(([v, l]) => `<option value="${v}" ${state.bank.dir === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+       ${list.length !== all.length ? `<span class="muted small">${all.length} kelimeden ${list.length} tanesi gösteriliyor</span>` : ''}`
+    : '';
+  $('#bank-list').innerHTML = list.length
+    ? `<div class="wlist">${list.map(({ w, day }) => `
+        <div class="wrow">
+          <button type="button" class="daytag" data-action="goto-day" data-n="${day}" title="${day}. güne git">${day}. gün</button>
+          <div class="wmain">
+            <div class="wline"><b class="wen">${esc(w.en)}</b>${speakBtn(w.en)}<span class="wtr">${esc(w.tr)}</span></div>
+            ${w.sentence ? `<p class="wsent">“${esc(w.sentence)}”</p>` : ''}
+          </div>
+          <div class="wflags">
+            <span class="flag mem ${w.learned ? 'on' : ''}">${w.learned ? '✓' : '○'} ezber</span>
+            <span class="flag sen ${w.sentence ? 'on' : ''}">${w.sentence ? '✓' : '○'} cümle</span>
+            <button type="button" class="flag hard ${w.hard ? 'on' : ''}" data-action="toggle-hard" data-day="${day}" data-id="${esc(w.id)}" aria-pressed="${!!w.hard}" title="Zor kelime işaretini aç/kapat">🔁 zor</button>
+          </div>
+        </div>`).join('')}</div>`
+    : '<div class="empty">Bu arama ya da filtreyle eşleşen kelime yok.</div>';
+}
+
+async function toggleHard(day, id) {
+  const w = findWord(day, id); if (!w) return;
+  w.hard = !w.hard;
+  renderBankFilters(); renderBankList();
+  await persist(() => Store.saveDay(dayByN(day)));
+}
+
+/* ---- Tekrar modu (kart kart, kendin değerlendirirsin) ---- */
+function studyStart(items) {
+  if (!items.length) return;
+  const dir = state.bank.dir;
+  state.study = {
+    items: shuffle(items.map(x => ({ day: x.day, id: x.w.id, dir: dir === 'mix' ? (Math.random() < 0.5 ? 'en-tr' : 'tr-en') : dir }))),
+    i: 0, revealed: false, known: 0, missed: []
+  };
+  renderStudy();
+  $('#study').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function renderStudy() {
+  const s = state.study, box = $('#study');
+  if (!s) { box.innerHTML = ''; return; }
+  const total = s.items.length;
+  if (s.i >= total) {
+    const missed = s.missed.map(it => findWord(it.day, it.id)).filter(Boolean);
+    box.innerHTML = `<div class="study">
+        <div class="quiz-top"><b>Sonuç: ${total} kelimeden ${s.known} tanesini bildin</b><button type="button" class="link-btn" data-action="study-close">Kapat</button></div>
+        ${missed.length
+          ? `<p class="muted">Bilemediklerin “zor” olarak işaretlendi: ${missed.map(w => `<b>${esc(w.en)}</b> = ${esc(w.tr)}`).join(' · ')}</p>`
+          : '<p class="fb ok">Hepsini bildin! 🎉</p>'}
+        <div class="task-foot">
+          ${missed.length ? '<button class="btn" type="button" data-action="study-missed">Bilemediklerimi tekrar çalış</button>' : ''}
+          <button class="btn ghost" type="button" data-action="study-close">Kapat</button>
+        </div>
+      </div>`;
+    return;
+  }
+  const it = s.items[s.i], w = findWord(it.day, it.id);
+  if (!w) { s.i++; renderStudy(); return; } // bu arada silinmiş kelime
+  const enFirst = it.dir === 'en-tr';
+  box.innerHTML = `<div class="study">
+      <div class="quiz-top"><span class="muted small">Kart ${s.i + 1}/${total} · ✓ ${s.known} · ✗ ${s.missed.length}</span><button type="button" class="link-btn" data-action="study-close">Bitir</button></div>
+      <div class="study-card" data-action="study-reveal" role="button" tabindex="0" aria-label="Cevabı göster">
+        ${enFirst || s.revealed ? speakBtn(w.en) : ''}
+        <p class="muted small" style="margin:0">${enFirst ? 'Türkçesi ne?' : 'İngilizcesi ne?'} · ${it.day}. gün</p>
+        <div class="q">${esc(enFirst ? w.en : w.tr)}</div>
+        ${s.revealed
+          ? `<div class="answer">${esc(enFirst ? w.tr : w.en)}</div>${w.sentence ? `<p class="wsent">“${esc(w.sentence)}”</p>` : ''}`
+          : '<p class="muted small" style="margin:0">Cevabı görmek için karta tıkla</p>'}
+      </div>
+      ${s.revealed
+        ? `<div class="study-btns">
+             <button class="btn no" type="button" data-action="study-mark" data-ok="0">✗ Bilemedim</button>
+             <button class="btn yes" type="button" data-action="study-mark" data-ok="1">✓ Bildim</button>
+           </div>`
+        : '<button class="btn" type="button" data-action="study-reveal" style="width:100%">Cevabı göster</button>'}
+      <p class="kbd">Klavye: Boşluk = cevabı göster · ← bilemedim · → bildim</p>
+    </div>`;
+  const card = $('.study-card', box);
+  if (card) card.focus({ preventScroll: true });
+}
+
+function studyReveal() {
+  const s = state.study;
+  if (!s || s.revealed || s.i >= s.items.length) return;
+  s.revealed = true; renderStudy();
+}
+
+async function studyMark(ok) {
+  const s = state.study;
+  if (!s || !s.revealed || s.i >= s.items.length) return;
+  const it = s.items[s.i], w = findWord(it.day, it.id);
+  if (ok) s.known++; else s.missed.push(it);
+  s.i++; s.revealed = false;
+  renderStudy();
+  // Bilemediğin kelime "zor" olur, bildiğinde işaret kalkar
+  if (w && w.hard !== !ok) {
+    w.hard = !ok;
+    renderBankFilters(); renderBankList();
+    await persist(() => Store.saveDay(dayByN(it.day)));
+  }
+}
+
+/* =====================================================================
+   İSTATİSTİK
+   ===================================================================== */
+const MILESTONES = [10, 25, 50, 100, 150, 200, 300, 400, 500, 750, 1000, 1500, 2000, 3000, 5000, 10000];
+const C_ADDED = '#2f55d4', C_LEARNED = '#b85f00'; // mavi = eklenen, turuncu = öğrenilen (ezber rengi)
+const DAY_MS = 86400000;
+const addDays = (s, k) => new Date(Date.parse(s + 'T00:00:00Z') + k * DAY_MS).toISOString().slice(0, 10);
+const shortDate = s => { try { return new Date(s + 'T00:00:00').toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' }); } catch (e) { return s; } };
+
+// Kelimenin öğrenildiği tarih. Eski kayıtlarda tarih yoksa ezber gününün (ertesi günün) tarihi sayılır.
+function learnedDate(w, dayN) {
+  if (!w.learned) return '';
+  if (w.learnedAt) return w.learnedAt;
+  return (dayByN(dayN + 1) || dayByN(dayN)).date;
+}
+
+function computeStats() {
+  const today = todayStr();
+  const all = allWords();
+  const learnedList = all.filter(x => x.w.learned).map(x => learnedDate(x.w, x.day));
+  const addedList = all.map(x => dayByN(x.day).date);
+  const learned = learnedList.length, total = all.length;
+
+  // Çalışma serisi: bugün (ya da bugün henüz çalışılmadıysa dün) geriye doğru kesintisiz aktif günler
+  const active = new Set([...state.days.map(d => d.date), ...learnedList]);
+  const studiedToday = active.has(today);
+  let streak = 0, cur = studiedToday ? today : addDays(today, -1);
+  while (active.has(cur)) { streak++; cur = addDays(cur, -1); }
+
+  // Zaman serisi: ilk günden bugüne her tarih için toplam eklenen / öğrenilen
+  const allDates = [...addedList, ...learnedList, today].filter(Boolean).sort();
+  let start = allDates[0], end = allDates[allDates.length - 1];
+  if ((Date.parse(end) - Date.parse(start)) / DAY_MS > 730) start = addDays(end, -730);
+  const countBy = list => list.reduce((m, d) => (m[d] = (m[d] || 0) + 1, m), {});
+  const addMap = countBy(addedList), learnMap = countBy(learnedList);
+  let ca = addedList.filter(d => d < start).length, cl = learnedList.filter(d => d < start).length;
+  const series = { dates: [], added: [], learned: [] };
+  for (let d = start; d <= end; d = addDays(d, 1)) {
+    ca += addMap[d] || 0; cl += learnMap[d] || 0;
+    series.dates.push(d); series.added.push(ca); series.learned.push(cl);
+  }
+
+  const next = MILESTONES.find(m => m > learned) || Math.ceil((learned + 1) / 5000) * 5000;
+  const prev = [...MILESTONES].reverse().find(m => m <= learned) || 0;
+  return {
+    total, learned, today,
+    pct: total ? Math.round(learned / total * 100) : 0,
+    week: learnedList.filter(d => d >= addDays(today, -6) && d <= today).length,
+    sentences: all.filter(x => x.w.sentence.trim()).length,
+    hard: all.filter(x => x.w.hard).length,
+    completeDays: state.days.filter(d => !progress(d.n).includes('todo')).length,
+    streak, studiedToday, next, prev, series
+  };
+}
+
+let lastSeries = null;
+function renderStatsView() {
+  const s = computeStats();
+  const box = $('#stats-body');
+  if (!s.total) {
+    lastSeries = null;
+    box.innerHTML = '<div class="empty">Henüz kelime eklemedin. <b>Günlük çalışma</b> sekmesinden ilk 5 kelimeni ekleyince istatistiklerin burada görünecek.</div>';
+    return;
+  }
+  const tile = (l, v, sub) => `<div class="tile"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${sub}</div></div>`;
+  const goalPct = Math.min(100, Math.round((s.learned - s.prev) / (s.next - s.prev) * 100));
+  const rows = state.days.slice().reverse().map(d => {
+    const n = d.words.length;
+    return `<tr>
+        <td><button type="button" class="daytag" data-action="goto-day" data-n="${d.n}">${d.n}. gün</button></td>
+        <td>${esc(shortDate(d.date))}</td>
+        <td class="num">${n}</td>
+        <td class="num">${d.words.filter(w => w.learned).length}/${n}</td>
+        <td class="num">${d.words.filter(w => w.sentence.trim()).length}/${n}</td>
+      </tr>`;
+  }).join('');
+  const sr = s.series;
+  const tableRows = sr.dates.map((d, i) => `<tr><td>${esc(shortDate(d))}</td><td class="num">${sr.added[i]}</td><td class="num">${sr.learned[i]}</td></tr>`).reverse().join('');
+
+  box.innerHTML = `
+    <div class="hero">
+      <div>
+        <div class="hero-label">Öğrendiğin kelime</div>
+        <div class="hero-num">${s.learned}</div>
+        <div class="hero-sub">Toplam ${s.total} kelime · öğrenme oranı %${s.pct}<br>
+          ${s.week ? `<span class="up">Son 7 günde +${s.week}</span>` : 'Son 7 günde yeni kelime öğrenmedin'}</div>
+      </div>
+      <div class="goal">
+        <div class="goal-top"><b>Sıradaki hedef: ${s.next} kelime</b><span class="muted">${s.next - s.learned} kaldı</span></div>
+        <div class="meter" role="progressbar" aria-label="Sıradaki hedefe ilerleme" aria-valuemin="${s.prev}" aria-valuemax="${s.next}" aria-valuenow="${s.learned}"><i style="width:${goalPct}%"></i></div>
+        <div class="muted small">${s.prev ? `Ulaştığın son hedef: ${s.prev} kelime 🎉` : 'İlk hedefin 10 kelime. Başarabilirsin!'}</div>
+      </div>
+    </div>
+    <div class="tiles">
+      ${tile('Toplam kelime', s.total, `${state.days.length} günde eklendi`)}
+      ${tile('Henüz ezberlenmemiş', s.total - s.learned, s.total - s.learned ? 'Tüm kelimeler’den çalış' : 'hepsi ezberlendi 🎉')}
+      ${tile('Cümle kurulan', s.sentences, 'kelimeyle cümle yazdın')}
+      ${tile('Zor kelime', s.hard, s.hard ? 'tekrar etmeye değer' : 'zor kelime yok')}
+      ${tile('Tamamlanan gün', s.completeDays, 'üç görevi de biten gün')}
+      ${tile('Çalışma serisi', s.streak + ' gün', s.studiedToday ? 'bugün çalıştın ✓' : 'bugün henüz çalışmadın')}
+    </div>
+    <div class="chart-block">
+      <div class="chart-head">
+        <h3>Kelime sayısı zaman içinde</h3>
+        <div class="legend" aria-hidden="true">
+          <span><i class="key" style="background:${C_ADDED}"></i>Eklenen</span>
+          <span><i class="key" style="background:${C_LEARNED}"></i>Öğrenilen</span>
+        </div>
+      </div>
+      <div class="chart-wrap" id="chart"></div>
+      <details class="tbl"><summary>Grafiği tablo olarak gör</summary>
+        <table class="data"><thead><tr><th>Tarih</th><th class="num">Eklenen (toplam)</th><th class="num">Öğrenilen (toplam)</th></tr></thead><tbody>${tableRows}</tbody></table>
+      </details>
+    </div>
+    <div class="chart-block">
+      <h3>Gün gün</h3>
+      <p class="muted small" style="margin:4px 0 0">Her satır, o gün eklediğin kelimelerden kaçını ezberlediğini ve kaçıyla cümle kurduğunu gösterir.</p>
+      <table class="data"><thead><tr><th>Gün</th><th>Tarih</th><th class="num">Eklenen</th><th class="num">Ezberlenen</th><th class="num">Cümle</th></tr></thead><tbody>${rows}</tbody></table>
+    </div>`;
+  lastSeries = sr;
+  drawChart($('#chart'), sr);
+}
+
+function niceScale(max) {
+  const steps = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000, 10000];
+  const step = steps.find(st => max / st <= 5) || 10000;
+  return { step, top: Math.max(step, Math.ceil(max / step) * step) };
+}
+
+function drawChart(el, data) {
+  const n = data.dates.length;
+  if (n < 2) {
+    el.innerHTML = '<div class="empty">Grafik, ertesi gün çalışmaya devam edince dolmaya başlar. Şimdilik bugünün sayıları üstte.</div>';
+    return;
+  }
+  const W = Math.max(300, Math.round(el.clientWidth || 640)), H = 250;
+  const m = { l: 38, r: 44, t: 16, b: 30 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const { step, top } = niceScale(Math.max(1, ...data.added, ...data.learned));
+  const x = i => m.l + i * iw / (n - 1);
+  const y = v => m.t + ih - (v / top) * ih;
+  const f = v => v.toFixed(1);
+  let g = '';
+  for (let v = 0; v <= top; v += step) {
+    g += `<line class="${v ? 'grid' : 'axis'}" x1="${m.l}" x2="${W - m.r}" y1="${f(y(v))}" y2="${f(y(v))}"/>`;
+    g += `<text class="tick" x="${m.l - 8}" y="${f(y(v) + 4)}" text-anchor="end">${v}</text>`;
+  }
+  const nt = Math.min(n, W < 480 ? 4 : 6);
+  const seen = new Set();
+  for (let k = 0; k < nt; k++) {
+    const i = Math.round(k * (n - 1) / (nt - 1));
+    if (seen.has(i)) continue; seen.add(i);
+    const anchor = k === 0 ? 'start' : k === nt - 1 ? 'end' : 'middle';
+    g += `<text class="tick" x="${f(x(i))}" y="${H - 8}" text-anchor="${anchor}">${esc(shortDate(data.dates[i]))}</text>`;
+  }
+  const path = arr => arr.map((v, i) => (i ? 'L' : 'M') + f(x(i)) + ' ' + f(y(v))).join(' ');
+  const last = n - 1, ya = y(data.added[last]), yl = y(data.learned[last]);
+  const ends = Math.abs(ya - yl) >= 16
+    ? `<text class="endlbl" x="${f(x(last) + 9)}" y="${f(ya + 4)}">${data.added[last]}</text>
+       <text class="endlbl" x="${f(x(last) + 9)}" y="${f(yl + 4)}">${data.learned[last]}</text>` : '';
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" tabindex="0" role="img"
+      aria-label="Zaman içinde eklenen ve öğrenilen kelime sayısı. Bugün: ${data.added[last]} eklenen, ${data.learned[last]} öğrenilen. Sol ve sağ ok tuşlarıyla tarihler arasında gezinebilirsin.">
+      ${g}
+      <path d="${path(data.learned)} L${f(x(last))} ${f(y(0))} L${f(x(0))} ${f(y(0))} Z" fill="${C_LEARNED}" fill-opacity=".1"/>
+      <path class="ln" d="${path(data.added)}" stroke="${C_ADDED}"/>
+      <path class="ln" d="${path(data.learned)}" stroke="${C_LEARNED}"/>
+      <circle cx="${f(x(last))}" cy="${f(ya)}" r="4" fill="${C_ADDED}" stroke="#fffdf8" stroke-width="2"/>
+      <circle cx="${f(x(last))}" cy="${f(yl)}" r="4" fill="${C_LEARNED}" stroke="#fffdf8" stroke-width="2"/>
+      ${ends}
+      <g class="hover" visibility="hidden">
+        <line class="xhair" y1="${m.t}" y2="${f(y(0))}"/>
+        <circle class="ha" r="4" fill="${C_ADDED}" stroke="#fffdf8" stroke-width="2"/>
+        <circle class="hl" r="4" fill="${C_LEARNED}" stroke="#fffdf8" stroke-width="2"/>
+      </g>
+      <rect x="${m.l}" y="0" width="${iw}" height="${H}" fill="transparent"/>
+    </svg>
+    <div class="tip" hidden></div>`;
+
+  const svg = $('svg', el), tip = $('.tip', el), hov = $('.hover', svg);
+  const xh = $('.xhair', hov), ha = $('.ha', hov), hl = $('.hl', hov);
+  let idx = -1;
+  const show = i => {
+    idx = Math.max(0, Math.min(n - 1, i));
+    const cx = f(x(idx));
+    xh.setAttribute('x1', cx); xh.setAttribute('x2', cx);
+    ha.setAttribute('cx', cx); ha.setAttribute('cy', f(y(data.added[idx])));
+    hl.setAttribute('cx', cx); hl.setAttribute('cy', f(y(data.learned[idx])));
+    hov.setAttribute('visibility', 'visible');
+    tip.replaceChildren();
+    const d = document.createElement('div'); d.className = 'd'; d.textContent = fmtDate(data.dates[idx]); tip.append(d);
+    [['Eklenen', data.added[idx], C_ADDED], ['Öğrenilen', data.learned[idx], C_LEARNED]].forEach(([label, val, col]) => {
+      const r = document.createElement('div'); r.className = 'r';
+      const k = document.createElement('i'); k.className = 'k'; k.style.background = col;
+      const b = document.createElement('b'); b.textContent = val;
+      const sp = document.createElement('span'); sp.className = 'muted'; sp.textContent = label;
+      r.append(k, b, sp); tip.append(r);
+    });
+    tip.hidden = false;
+    const scale = svg.getBoundingClientRect().width / W || 1;
+    const px = x(idx) * scale, tw = tip.offsetWidth;
+    tip.style.left = (px + 14 + tw > el.clientWidth ? px - 14 - tw : px + 14) + 'px';
+  };
+  const hide = () => { hov.setAttribute('visibility', 'hidden'); tip.hidden = true; };
+  const fromEvent = e => {
+    const r = svg.getBoundingClientRect();
+    const px = (e.clientX - r.left) * (W / r.width);
+    return Math.round((px - m.l) / iw * (n - 1));
+  };
+  svg.addEventListener('pointermove', e => show(fromEvent(e)));
+  svg.addEventListener('pointerdown', e => show(fromEvent(e)));
+  svg.addEventListener('pointerleave', hide);
+  svg.addEventListener('focus', () => show(idx < 0 ? n - 1 : idx));
+  svg.addEventListener('blur', hide);
+  svg.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(idx - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(idx + 1); }
+  });
+}
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (state.view === 'stats' && lastSeries) drawChart($('#chart'), lastSeries); }, 150);
+});
+
+/* ---- Yedekleme ---- */
+async function exportJson() {
+  const data = { app: 'kelime-defteri', version: 1, exportedAt: new Date().toISOString(), days: state.days };
+  const json = JSON.stringify(data, null, 2);
+  const filename = `kelime-defteri-${todayStr()}.json`;
+  if (inArtifact()) { // claude.ai içinde dosya indirme izinle yapılır
+    const dl = await window.claude.use('downloads');
+    if (dl) {
+      try { await dl.save({ filename, data: json }); }
+      catch (e) { if (!e || e.code !== 'declined') toast('Yedek indirilemedi: ' + ((e && (e.message || e.code)) || e)); }
+      return;
+    }
+  }
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+async function importFile(file) {
+  if (!file) return;
+  try {
+    const data = JSON.parse(await file.text());
+    const days = normalize(Array.isArray(data) ? data : data.days);
+    if (!days.length) throw new Error('dosyada gün bulunamadı');
+    state.days = days; state.active = lastN(); state.quiz = null; state.study = null; state.flipped.clear();
+    render();
+    await persist(() => Store.replaceAll(state.days));
+    toast(`${days.length} gün içe aktarıldı`);
+  } catch (e) { toast('İçe aktarılamadı: ' + e.message); }
+  finally { $('#import-file').value = ''; }
+}
+async function resetAll() {
+  if (!confirmTwice('reset', 'Tüm günler ve kelimeler silinecek. Emin misin? Onaylamak için tekrar tıkla.')) return;
+  state.days = [newDay(1)]; state.active = 1; state.quiz = null; state.study = null; state.flipped.clear();
+  render();
+  await persist(() => Store.replaceAll(state.days));
+  toast('Defter sıfırlandı');
+}
+
+/* =====================================================================
+   OLAYLAR
+   ===================================================================== */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-action]');
+  if (!t) return;
+  switch (t.dataset.action) {
+    case 'goto': goto(+t.dataset.n); break;
+    case 'new-day': addDay(); break;
+    case 'delete-day': deleteDay(); break;
+    case 'speak': speak(t.dataset.text); break;
+    case 'speak-row': {
+      const v = t.closest('.row').querySelector('.en').value.trim();
+      v ? speak(v) : toast('Önce İngilizce kelimeyi yaz'); break;
+    }
+    case 'clear-row': {
+      const r = t.closest('.row');
+      r.querySelectorAll('input').forEach(i => { i.value = ''; });
+      r.classList.remove('err'); state.dirtyWords = true;
+      r.querySelector('.en').focus(); break;
+    }
+    case 'flip': flip(t.closest('.fc')); break;
+    case 'flip-all': flipAll(); break;
+    case 'learn': toggleLearn(+t.dataset.day, t.dataset.id); break;
+    case 'quiz-start': quizStart(+t.dataset.day); break;
+    case 'quiz-close': state.quiz = null; renderMem(); break;
+    case 'save-sentences': saveSentences(+t.dataset.day, false); break;
+    case 'view': setView(t.dataset.view); window.scrollTo({ top: 0 }); break;
+    case 'bank-filter': state.bank.filter = t.dataset.f; renderBankFilters(); renderBankList(); break;
+    case 'goto-day': setView('daily').then(() => goto(+t.dataset.n)); window.scrollTo({ top: 0 }); break;
+    case 'toggle-hard': toggleHard(+t.dataset.day, t.dataset.id); break;
+    case 'study-start': studyStart(bankList()); break;
+    case 'study-reveal': studyReveal(); break;
+    case 'study-mark': studyMark(t.dataset.ok === '1'); break;
+    case 'study-missed': studyStart(state.study.missed.map(it => ({ day: it.day, w: findWord(it.day, it.id) })).filter(x => x.w)); break;
+    case 'study-close': state.study = null; renderStudy(); break;
+    case 'export': exportJson(); break;
+    case 'reset': resetAll(); break;
+    case 'logout': FirebaseStore.logout(); break;
+  }
+});
+
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target.dataset.form;
+  if (f === 'words') saveWords(false);
+  if (f === 'quiz') quizSubmit();
+});
+
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.matches('#sec-new input')) { state.dirtyWords = true; t.closest('.row').classList.remove('err'); }
+  if (t.matches('#sec-sen textarea')) updateCheck(t);
+  if (t.id === 'bank-q') { state.bank.q = t.value; renderBankList(); }
+});
+
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.matches('#sec-sen textarea')) saveSentences(+t.dataset.day, true);
+  if (t.id === 'import-file') importFile(t.files[0]);
+  if (t.id === 'bank-sort') { state.bank.sort = t.value; renderBankList(); }
+  if (t.id === 'study-dir') state.bank.dir = t.value;
+});
+
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  // Kelime kutularında Enter: sonraki kutuya geç, sonuncudaysa kaydet
+  if (e.key === 'Enter' && t.matches('#sec-new .row input')) {
+    e.preventDefault();
+    const inputs = $$('#sec-new .row input');
+    const i = inputs.indexOf(t);
+    if (i < inputs.length - 1) inputs[i + 1].focus(); else saveWords(false);
+  }
+  // Kartı klavyeyle çevir
+  if ((e.key === 'Enter' || e.key === ' ') && t.matches('.fc-inner')) { e.preventDefault(); flip(t.closest('.fc')); }
+  // Tekrar modu: Boşluk = göster, ← bilemedim, → bildim
+  if (state.view === 'bank' && state.study && !t.matches('input, textarea, select, button')) {
+    const s = state.study;
+    if (s.i < s.items.length) {
+      if ((e.key === ' ' || e.key === 'Enter') && !s.revealed) { e.preventDefault(); studyReveal(); }
+      else if (s.revealed && e.key === 'ArrowRight') { e.preventDefault(); studyMark(true); }
+      else if (s.revealed && e.key === 'ArrowLeft') { e.preventDefault(); studyMark(false); }
+    }
+  }
+});
+
+// Kaydedilmemiş kelime varken sayfadan çıkarken uyar
+window.addEventListener('beforeunload', e => { if (state.dirtyWords) { e.preventDefault(); e.returnValue = ''; } });
+
+/* =====================================================================
+   BAŞLAT
+   ===================================================================== */
+async function init() {
+  const slow = setTimeout(() => {
+    const l = $('#loading'); if (l) l.textContent = 'Veriler hâlâ yükleniyor… İnternet bağlantını kontrol et.';
+  }, 10000);
+  if (inArtifact()) {
+    try { await ArtifactStore.init(); Store = ArtifactStore; }
+    catch (e) { console.error(e); toast('Claude hesabına bağlanılamadı, veriler bu tarayıcıda tutulacak.'); }
+  } else if (CONFIG.USE_FIREBASE) {
+    try { await FirebaseStore.init(); Store = FirebaseStore; }
+    catch (e) { console.error(e); toast('Firebase’e bağlanılamadı, veriler bu tarayıcıda tutulacak.'); }
+  }
+  let days = [];
+  try { days = await Store.loadDays(); }
+  catch (e) {
+    // Yükleme başarısızsa hiçbir şey yazma: boş gün kaydedip var olan veriyi ezmeyelim
+    clearTimeout(slow); console.error(e);
+    $('#loading').textContent = 'Veriler yüklenemedi (' + (e.message || e.code || e) + '). Sayfayı yenileyip tekrar dene.';
+    return;
+  }
+  clearTimeout(slow);
+  state.days = normalize(days);
+  if (!state.days.length) {
+    state.days.push(newDay(1));
+    await persist(() => Store.saveDay(state.days[0]));
+  }
+  state.active = lastN();
+  $('#loading').remove();
+  $('#store-label').textContent = Store.label;
+  $('#storage-note').innerHTML = Store.note;
+  $('#logout-btn').hidden = Store !== FirebaseStore;
+  render();
+  viewFromHash();
+  window.addEventListener('hashchange', viewFromHash);
+}
+function viewFromHash() {
+  const h = location.hash;
+  const v = Object.keys(VIEW_HASH).find(k => k !== 'daily' && VIEW_HASH[k] === h) || 'daily';
+  if (v !== state.view) setView(v);
+}
+init();
+})();
+</script>
+</body>
+</html>
