@@ -450,15 +450,15 @@
    3) USE_FIREBASE: true yap
    ===================================================================== */
 const CONFIG = {
-  USE_FIREBASE: false,
-  FIREBASE_VERSION: '10.12.2',
+  USE_FIREBASE: true,
+  FIREBASE_VERSION: '12.17.1',
   firebaseConfig: {
-    apiKey: '',
-    authDomain: '',
-    projectId: '',
-    storageBucket: '',
-    messagingSenderId: '',
-    appId: ''
+    apiKey: 'AIzaSyAr53FcuLKmGmnZ7LPqiomHZxVRozHsxuY',
+    authDomain: 'kelimeing.firebaseapp.com',
+    projectId: 'kelimeing',
+    storageBucket: 'kelimeing.firebasestorage.app',
+    messagingSenderId: '617416136728',
+    appId: '1:617416136728:web:f600b4954ec05ed4750b6d'
   }
 };
 
@@ -587,7 +587,15 @@ const FirebaseStore = {
     this.fs = fs; this.authMod = authMod;
     this.db = fs.getFirestore(app);
     this.auth = authMod.getAuth(app);
-    let user = await new Promise(res => { const off = authMod.onAuthStateChanged(this.auth, u => { off(); res(u); }); });
+    // İlk oturum durumunu bir kez oku (daha önce giriş yapıldıysa kullanıcı hemen gelir)
+    let user = await new Promise(res => {
+      let done = false, off = null;
+      off = authMod.onAuthStateChanged(this.auth, u => {
+        if (done) return; done = true;
+        if (off) off(); else setTimeout(() => off && off(), 0);
+        res(u);
+      });
+    });
     if (!user) user = await askLogin(this);
     this.uid = user.uid;
     this.label = `Firebase’e bağlı · ${user.email || 'giriş yapıldı'}`;
